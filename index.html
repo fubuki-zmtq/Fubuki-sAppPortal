@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fubuki's App Portal</title>
+<style>
+  /* 全体のリセットと基本設定 */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    background: linear-gradient(135deg, #0b1320, #1a2a3a, #2c4c5e);
+    background-attachment: fixed;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 星空と流れ星を閉じ込める固定コンテナ */
+  .stars-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  /* 静かな星空の背景 */
+  .stars-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><circle cx="45" cy="82" r="1" fill="white" opacity="0.8"/><circle cx="120" cy="30" r="1.5" fill="white" opacity="0.5"/><circle cx="210" cy="150" r="0.8" fill="white" opacity="0.9"/><circle cx="80" cy="220" r="1.2" fill="white" opacity="0.4"/><circle cx="260" cy="60" r="1" fill="white" opacity="0.6"/><circle cx="180" cy="270" r="1.5" fill="white" opacity="0.3"/><circle cx="15" cy="180" r="1" fill="white" opacity="0.7"/><circle cx="280" cy="210" r="0.5" fill="white" opacity="0.8"/></svg>');
+    background-repeat: repeat;
+  }
+
+  /* 流れ星の基本設定 */
+  .shooting-star {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+    border-radius: 1px;
+    opacity: 0;
+  }
+  
+  /* 流れ星の先端 */
+  .shooting-star::after {
+    content: '';
+    position: absolute;
+    right: -2px;
+    top: -1.5px;
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.9);
+  }
+
+  /* 流れ星の動きの定義 */
+  @keyframes shoot {
+    0% { transform: rotate(135deg) translateX(-200px); opacity: 0; }
+    1% { opacity: 1; }
+    5% { transform: rotate(135deg) translateX(1200px); opacity: 0; }
+    100% { transform: rotate(135deg) translateX(1200px); opacity: 0; }
+  }
+
+  /* 流れ星の出現位置とタイミング */
+  .star1 { top: 10%; left: 80%; width: 80px; animation: shoot 30s infinite 0s; }
+  .star2 { top: -10%; left: 40%; width: 60px; animation: shoot 30s infinite 10s; }
+  .star3 { top: 30%; left: 90%; width: 100px; animation: shoot 30s infinite 20s; }
+
+  /* ヘッダー部分 */
+  header {
+    text-align: center;
+    margin: 60px 0 40px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    letter-spacing: 0.1em;
+    margin: 0 0 10px 0;
+    font-weight: normal;
+  }
+
+  header p {
+    color: #b0c4de;
+    letter-spacing: 0.05em;
+    margin-bottom: 5px;
+  }
+
+  /* 注意事項の表記 */
+  .notes {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.5;
+  }
+
+  .notes p {
+    margin: 5px 0;
+  }
+
+  /* メインコンテンツ */
+  main {
+    width: 90%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-bottom: 60px;
+  }
+
+  /* 各アプリのカード（さらに透明に、ぼかしを最小限に） */
+  .app-card {
+    background: rgba(255, 255, 255, 0.01);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    padding: 35px;
+    transition: transform 0.3s ease, background 0.3s ease, border 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .app-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+
+  .app-card h2 {
+    margin: 0 0 15px 0;
+    font-size: 1.4rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 12px;
+    font-weight: normal;
+  }
+
+  .app-card p {
+    line-height: 1.7;
+    color: #dcdcdc;
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+  }
+
+  /* ボタンの配置と装飾 */
+  .btn-container {
+    text-align: right;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 10px 30px;
+    background-color: transparent;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+  }
+
+  .btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #ffffff;
+  }
+
+  /* フッター部分 */
+  footer {
+    margin-top: auto;
+    margin-bottom: 40px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.5;
+  }
+
+  footer p {
+    margin: 5px 0;
+  }
+
+  /* スマホ向けの微調整 */
+  @media (max-width: 480px) {
+    h1 { font-size: 1.8rem; }
+    .notes { font-size: 0.8rem; }
+    .app-card { padding: 25px; }
+    .app-card h2 { font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 星空と流れ星の背景レイヤー -->
+<div class="stars-container">
+  <div class="stars-bg"></div>
+  <div class="shooting-star star1"></div>
+  <div class="shooting-star star2"></div>
+  <div class="shooting-star star3"></div>
+</div>
+
+<header>
+<h1>Fubuki's App Portal</h1>
+<p>ZMTQの世界をより楽しむウェブアプリ</p>
+<div class="notes">
+<p>※このウェブアプリは全て非公式です。</p>
+<p>※すべてのアプリでZMTQの物語および世界観に関してのネタバレを含む場合があります。</p>
+</div>
+</header>
+
+<main>
+<!-- ウェブアプリ1 -->
+<div class="app-card">
+<h2>ひとことフブキ</h2>
+<p>氷河坑道連邦の首領で古代勇者のフブキが話してくれます。セリフは時間帯によって変わります。レアなセリフもあるかも？</p>
+<div class="btn-container">
+<a href="https://fubuki-zmtq.github.io/hitokoto_fubuki/" target="_blank" class="btn">アクセス</a>
+</div>
+</div>
+
+<!-- ウェブアプリ2 -->
+<div class="app-card">
+<h2>ZMTQランダム作文</h2>
+<p>ZMTQに関するワードで、「いつ・どこで・誰が・何をした」をランダムに組み合わせて生成します。組み合わせ次第でアチーブメントを達成できます。無駄に占いとクイズもあります。</p>
+<div class="btn-container">
+<a href="https://fubuki-zmtq.github.io/ZMTQ_RandomEssay/" target="_blank" class="btn">アクセス</a>
+</div>
+</div>
+
+<!-- ウェブアプリ3 -->
+<div class="app-card">
+<h2>古代勇者の旅支度</h2>
+<p>与えられた環境に合わせて最適な荷物を組み合わせ、同行する古代勇者を満足させるパズルゲームです。上級者向けのタイムアタックモードも用意しています。</p>
+<div class="btn-container">
+<a href="https://fubuki-zmtq.github.io/ZMTQ_AncientHerosPacking/" target="_blank" class="btn">アクセス</a>
+</div>
+</div>
+
+</main>
+
+<footer>
+<p>制作者：フブキ</p>
+</footer>
+
+</body>
+</html>
