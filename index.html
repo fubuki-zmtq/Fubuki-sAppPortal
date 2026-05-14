@@ -11,6 +11,7 @@
     margin: 0;
     padding: 0;
     font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    /* デフォルトの星空背景 */
     background: linear-gradient(135deg, #0b1320, #1a2a3a, #2c4c5e);
     background-attachment: fixed;
     color: #ffffff;
@@ -18,6 +19,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: background 0.5s ease; /* 背景色切り替えを滑らかに */
   }
 
   /* 星空と流れ星を閉じ込める固定コンテナ */
@@ -52,7 +54,6 @@
     opacity: 0;
   }
   
-  /* 流れ星の先端 */
   .shooting-star::after {
     content: '';
     position: absolute;
@@ -65,7 +66,6 @@
     box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.9);
   }
 
-  /* 流れ星の動きの定義 */
   @keyframes shoot {
     0% { transform: rotate(135deg) translateX(-200px); opacity: 0; }
     1% { opacity: 1; }
@@ -73,7 +73,6 @@
     100% { transform: rotate(135deg) translateX(1200px); opacity: 0; }
   }
 
-  /* 流れ星の出現位置とタイミング */
   .star1 { top: 10%; left: 80%; width: 80px; animation: shoot 30s infinite 0s; }
   .star2 { top: -10%; left: 40%; width: 60px; animation: shoot 30s infinite 10s; }
   .star3 { top: 30%; left: 90%; width: 100px; animation: shoot 30s infinite 20s; }
@@ -89,6 +88,22 @@
     letter-spacing: 0.1em;
     margin: 0 0 10px 0;
     font-weight: normal;
+    /* タップ用の設定 */
+    cursor: pointer;
+    user-select: none; /* 連打時に文字が選択されるのを防ぐ */
+    -webkit-tap-highlight-color: transparent; /* スマホタップ時の青い枠を消す */
+    transition: text-shadow 0.5s ease, color 0.5s ease;
+  }
+
+  /* タイトルタップ時の光るアニメーション */
+  .glow-effect {
+    animation: textGlow 0.6s ease-out;
+  }
+
+  @keyframes textGlow {
+    0% { text-shadow: 0 0 0px rgba(255,255,255,0); }
+    50% { text-shadow: 0 0 15px rgba(255,255,255,1), 0 0 25px rgba(150, 220, 255, 0.8); }
+    100% { text-shadow: 0 0 0px rgba(255,255,255,0); }
   }
 
   header p {
@@ -97,7 +112,6 @@
     margin-bottom: 5px;
   }
 
-  /* 注意事項の表記 */
   .notes {
     margin-top: 15px;
     font-size: 0.9rem;
@@ -105,9 +119,7 @@
     line-height: 1.5;
   }
 
-  .notes p {
-    margin: 5px 0;
-  }
+  .notes p { margin: 5px 0; }
 
   /* メインコンテンツ */
   main {
@@ -119,7 +131,6 @@
     margin-bottom: 60px;
   }
 
-  /* 各アプリのカード（さらに透明に、ぼかしを最小限に） */
   .app-card {
     background: rgba(255, 255, 255, 0.01);
     backdrop-filter: blur(1px);
@@ -152,10 +163,7 @@
     font-size: 0.95rem;
   }
 
-  /* ボタンの配置と装飾 */
-  .btn-container {
-    text-align: right;
-  }
+  .btn-container { text-align: right; }
 
   .btn {
     display: inline-block;
@@ -185,8 +193,58 @@
     line-height: 1.5;
   }
 
-  footer p {
-    margin: 5px 0;
+  footer p { margin: 5px 0; }
+
+  /* --- ここから隠し要素のスタイル --- */
+  
+  /* ホワイトアウト用の画面全体を覆うレイヤー */
+  #whiteout {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none; /* 通常時はクリックを邪魔しない */
+    transition: opacity 1.5s ease-in-out;
+  }
+
+  #whiteout.active {
+    opacity: 1;
+    pointer-events: all; /* アニメーション中は画面操作をロック */
+  }
+
+  /* 青空テーマ時の背景設定 */
+  body.theme-bluesky {
+    /* 紺から綺麗な水色へのグラデーション。文字が読めるように少し濃いめ */
+    background: linear-gradient(135deg, #0b2554, #1a4f8b, #3b88b0);
+  }
+
+  /* 青空テーマ時は星空を非表示にする */
+  body.theme-bluesky .stars-container {
+    display: none;
+  }
+
+  /* 隠しメッセージの基本設定 */
+  .secret-message {
+    display: none;
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.05em;
+  }
+
+  /* 青空テーマ時のみ、ふわっと表示させる */
+  body.theme-bluesky .secret-message {
+    display: block;
+    animation: fadeIn 2s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   /* スマホ向けの微調整 */
@@ -209,6 +267,7 @@
 </div>
 
 <header>
+<!-- タイトルに隠しコマンドの仕掛けを施します -->
 <h1>Fubuki's App Portal</h1>
 <p>ZMTQの世界をより楽しむウェブアプリ</p>
 <div class="notes">
@@ -249,7 +308,77 @@
 
 <footer>
 <p>制作者：フブキ</p>
+<!-- 青空テーマになった時だけ現れるメッセージ -->
+<p class="secret-message">僕らだけの世界へ、おかえりなさい。</p>
 </footer>
 
+<!-- 隠し要素を動かすためのJavaScript -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const title = document.querySelector('h1');
+    
+    // ホワイトアウト用の白い画面を作成して配置
+    const whiteout = document.createElement('div');
+    whiteout.id = 'whiteout';
+    document.body.appendChild(whiteout);
+
+    let tapCount = 0;
+    let tapTimer;
+    let isAnimating = false;
+
+    title.addEventListener('click', () => {
+      // ホワイトアウト演出中はタップを受け付けない
+      if (isAnimating) return; 
+
+      // タップするたびにふわっと光るエフェクトを再生
+      title.classList.remove('glow-effect');
+      void title.offsetWidth; // アニメーションを強制的にリセット
+      title.classList.add('glow-effect');
+
+      // タップ回数をカウント
+      tapCount++;
+      clearTimeout(tapTimer);
+
+      if (tapCount >= 5) {
+        // 5回連続タップ成功時の処理
+        tapCount = 0;
+        isAnimating = true;
+
+        // タイトルが強く発光する演出
+        title.style.textShadow = '0 0 20px #fff, 0 0 40px #fff, 0 0 60px #fff';
+        title.style.color = '#fff';
+
+        // 0.5秒後に画面が真っ白になり始める
+        setTimeout(() => {
+          whiteout.classList.add('active');
+
+          // 画面が完全に真っ白になったタイミング（1.5秒後）でテーマを切り替え
+          setTimeout(() => {
+            document.body.classList.toggle('theme-bluesky');
+            
+            // タイトルの強い光を元に戻す
+            title.style.textShadow = '';
+            title.style.color = '';
+            
+            // ホワイトアウトを解除して新しい景色を見せる
+            whiteout.classList.remove('active');
+            
+            // 視界が完全に戻るまで待機し、再び操作可能にする
+            setTimeout(() => {
+              isAnimating = false;
+            }, 1500); 
+
+          }, 1500); 
+
+        }, 500); 
+      } else {
+        // 1秒間次のタップがなければカウントをリセット（連打の判定時間）
+        tapTimer = setTimeout(() => {
+          tapCount = 0;
+        }, 1000);
+      }
+    });
+  });
+</script>
 </body>
 </html>
