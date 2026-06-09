@@ -113,8 +113,11 @@
     margin-bottom: 5px;
   }
 
+  /* 注意事項の表記 */
   .notes {
-    margin-top: 15px;
+    margin: 15px auto 0; /* 元の margin-top: 15px; を書き換え（中央揃えの指定を追加） */
+    width: 90%;          /* 追加：幅を画面の90%にして左右に余白を作る */
+    max-width: 700px;    /* 追加：パソコンで見た時に広がりすぎないように制限 */
     font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.7);
     line-height: 1.5;
