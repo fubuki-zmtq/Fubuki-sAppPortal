@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+<!--
+
+Fubuki's App Portal
+
+ソースコードへようこそ！アプリたちはお楽しみいただけていますでしょうか？
+
+役に立たない豆知識：「あーこういうアプリあったらなー」という声が制作者に届くと、いつの間にかアプリが追加されているかもしれません
+
+-->
 <html lang="ja">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -21,7 +30,6 @@
     margin: 0;
     padding: 0;
     font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-    /* デフォルトの星空背景 */
     background: linear-gradient(135deg, #0b1320, #1a2a3a, #2c4c5e);
     background-attachment: fixed;
     color: #ffffff;
@@ -29,10 +37,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: background 0.5s ease; /* 背景色切り替えを滑らかに */
+    transition: background 0.5s ease; 
   }
 
-  /* 星空と流れ星を閉じ込める固定コンテナ */
   .stars-container {
     position: fixed;
     top: 0;
@@ -44,7 +51,6 @@
     overflow: hidden;
   }
 
-  /* 静かな星空の背景 */
   .stars-bg {
     position: absolute;
     top: 0;
@@ -55,7 +61,6 @@
     background-repeat: repeat;
   }
 
-  /* 流れ星の基本設定 */
   .shooting-star {
     position: absolute;
     height: 1px;
@@ -98,14 +103,12 @@
     letter-spacing: 0.1em;
     margin: 0 0 10px 0;
     font-weight: normal;
-    /* タップ用の設定 */
     cursor: pointer;
-    user-select: none; /* 連打時に文字が選択されるのを防ぐ */
-    -webkit-tap-highlight-color: transparent; /* スマホタップ時の青い枠を消す */
+    user-select: none; 
+    -webkit-tap-highlight-color: transparent; 
     transition: text-shadow 0.5s ease, color 0.5s ease;
   }
 
-  /* タイトルタップ時の光るアニメーション */
   .glow-effect {
     animation: textGlow 0.6s ease-out;
   }
@@ -124,9 +127,9 @@
 
   /* 注意事項の表記 */
   .notes {
-    margin: 15px auto 0; /* 元の margin-top: 15px; を書き換え（中央揃えの指定を追加） */
-    width: 90%;          /* 追加：幅を画面の90%にして左右に余白を作る */
-    max-width: 700px;    /* 追加：パソコンで見た時に広がりすぎないように制限 */
+    margin: 15px auto 0; /* 中央揃えの指定を追加 */
+    width: 90%;          /* 幅を画面の90%にして左右に余白を作る */
+    max-width: 700px;    /* パソコンで見た時に広がりすぎないように制限 */
     font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.7);
     line-height: 1.5;
@@ -136,7 +139,7 @@
 
   .spoiler-alert {
     color: #ffcc66; 
-    opacity: 0.9; /* ここを 1 から 0.85 に変更して、少し透明度を持たせます */
+    opacity: 0.9; 
   }
 
   /* メインコンテンツ */
@@ -213,9 +216,7 @@
 
   footer p { margin: 5px 0; }
 
-  /* --- ここから隠し要素のスタイル --- */
-  
-  /* ホワイトアウト用の画面全体を覆うレイヤー */
+
   #whiteout {
     position: fixed;
     top: 0;
@@ -225,27 +226,23 @@
     background-color: #ffffff;
     z-index: 9999;
     opacity: 0;
-    pointer-events: none; /* 通常時はクリックを邪魔しない */
+    pointer-events: none; 
     transition: opacity 1.5s ease-in-out;
   }
 
   #whiteout.active {
     opacity: 1;
-    pointer-events: all; /* アニメーション中は画面操作をロック */
+    pointer-events: all;
   }
 
-  /* 青空テーマ時の背景設定 */
   body.theme-bluesky {
-    /* 紺から綺麗な水色へのグラデーション。文字が読めるように少し濃いめ */
     background: linear-gradient(135deg, #0b2554, #1a4f8b, #3b88b0);
   }
 
-  /* 青空テーマ時は星空を非表示にする */
   body.theme-bluesky .stars-container {
     display: none;
   }
 
-  /* 隠しメッセージの基本設定 */
   .secret-message {
     display: none;
     margin-top: 15px;
@@ -254,7 +251,6 @@
     letter-spacing: 0.05em;
   }
 
-  /* 青空テーマ時のみ、ふわっと表示させる */
   body.theme-bluesky .secret-message {
     display: block;
     animation: fadeIn 2s ease forwards;
@@ -285,7 +281,6 @@
 </div>
 
 <header>
-<!-- タイトルに隠しコマンドの仕掛けを施します -->
 <h1>Fubuki's App Portal</h1>
 <p>ZMTQの世界をより楽しむウェブアプリ</p>
 <div class="notes">
@@ -336,16 +331,13 @@
 
 <footer>
 <p>制作者：フブキ</p>
-<!-- 青空テーマになった時だけ現れるメッセージ -->
 <p class="secret-message">僕らだけの世界へ、おかえりなさい。</p>
 </footer>
 
-<!-- 隠し要素を動かすためのJavaScript -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const title = document.querySelector('h1');
     
-    // ホワイトアウト用の白い画面を作成して配置
     const whiteout = document.createElement('div');
     whiteout.id = 'whiteout';
     document.body.appendChild(whiteout);
@@ -355,43 +347,33 @@
     let isAnimating = false;
 
     title.addEventListener('click', () => {
-      // ホワイトアウト演出中はタップを受け付けない
       if (isAnimating) return; 
 
-      // タップするたびにふわっと光るエフェクトを再生
       title.classList.remove('glow-effect');
-      void title.offsetWidth; // アニメーションを強制的にリセット
+      void title.offsetWidth;
       title.classList.add('glow-effect');
 
-      // タップ回数をカウント
       tapCount++;
       clearTimeout(tapTimer);
 
       if (tapCount >= 5) {
-        // 5回連続タップ成功時の処理
         tapCount = 0;
         isAnimating = true;
 
-        // タイトルが強く発光する演出
         title.style.textShadow = '0 0 20px #fff, 0 0 40px #fff, 0 0 60px #fff';
         title.style.color = '#fff';
 
-        // 0.5秒後に画面が真っ白になり始める
         setTimeout(() => {
           whiteout.classList.add('active');
 
-          // 画面が完全に真っ白になったタイミング（1.5秒後）でテーマを切り替え
           setTimeout(() => {
             document.body.classList.toggle('theme-bluesky');
             
-            // タイトルの強い光を元に戻す
             title.style.textShadow = '';
             title.style.color = '';
             
-            // ホワイトアウトを解除して新しい景色を見せる
             whiteout.classList.remove('active');
             
-            // 視界が完全に戻るまで待機し、再び操作可能にする
             setTimeout(() => {
               isAnimating = false;
             }, 1500); 
@@ -400,7 +382,6 @@
 
         }, 500); 
       } else {
-        // 1秒間次のタップがなければカウントをリセット（連打の判定時間）
         tapTimer = setTimeout(() => {
           tapCount = 0;
         }, 1000);
