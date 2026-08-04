@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
 
-Fubuki's App Portal
+Fupuki's App Portal
 
 ソースコードへようこそ！アプリたちはお楽しみいただけていますでしょうか？
 
@@ -21,11 +21,10 @@ Fubuki's App Portal
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fubuki's App Portal</title>
+<title>Fupuki's App Portal</title>
 <link rel="icon" href="portal_icon.png">
 <link rel="apple-touch-icon" href="portal_icon.png">
 <style>
-  /* 全体のリセットと基本設定 */
   body {
     margin: 0;
     padding: 0;
@@ -125,11 +124,10 @@ Fubuki's App Portal
     margin-bottom: 5px;
   }
 
-  /* 注意事項の表記 */
   .notes {
-    margin: 15px auto 0; /* 中央揃えの指定を追加 */
-    width: 90%;          /* 幅を画面の90%にして左右に余白を作る */
-    max-width: 700px;    /* パソコンで見た時に広がりすぎないように制限 */
+    margin: 15px auto 0; 
+    width: 90%;        
+    max-width: 700px;  
     font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.7);
     line-height: 1.5;
@@ -142,7 +140,6 @@ Fubuki's App Portal
     opacity: 0.9; 
   }
 
-  /* メインコンテンツ */
   main {
     width: 90%;
     max-width: 700px;
@@ -204,7 +201,6 @@ Fubuki's App Portal
     border-color: #ffffff;
   }
 
-  /* フッター部分 */
   footer {
     margin-top: auto;
     margin-bottom: 40px;
@@ -261,7 +257,6 @@ Fubuki's App Portal
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* スマホ向けの微調整 */
   @media (max-width: 480px) {
     h1 { font-size: 1.8rem; }
     .notes { font-size: 0.8rem; }
@@ -272,7 +267,6 @@ Fubuki's App Portal
 </head>
 <body>
 
-<!-- 星空と流れ星の背景レイヤー -->
 <div class="stars-container">
   <div class="stars-bg"></div>
   <div class="shooting-star star1"></div>
@@ -281,7 +275,7 @@ Fubuki's App Portal
 </div>
 
 <header>
-<h1>Fubuki's App Portal</h1>
+<h1>Fupuki's App Portal</h1>
 <p>ZMTQの世界をより楽しむウェブアプリ</p>
 <div class="notes">
 <p>※これらのウェブアプリは全て非公式です。</p>
@@ -330,13 +324,14 @@ Fubuki's App Portal
 </main>
 
 <footer>
-<p>制作者：フブキ</p>
+<p id="author-name">制作者：ふぷき</p>
 <p class="secret-message">僕らだけの世界へ、おかえりなさい。</p>
 </footer>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const title = document.querySelector('h1');
+    const author = document.getElementById('author-name');
     
     const whiteout = document.createElement('div');
     whiteout.id = 'whiteout';
@@ -368,6 +363,14 @@ Fubuki's App Portal
 
           setTimeout(() => {
             document.body.classList.toggle('theme-bluesky');
+            
+            if (document.body.classList.contains('theme-bluesky')) {
+              title.textContent = "Fubuki's App Portal";
+              author.textContent = "制作者：フブキ";
+            } else {
+              title.textContent = "Fupuki's App Portal";
+              author.textContent = "制作者：ふぷき";
+            }
             
             title.style.textShadow = '';
             title.style.color = '';
